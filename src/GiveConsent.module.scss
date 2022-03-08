@@ -1,0 +1,41 @@
+.Form {
+  padding: 1rem;
+
+  input {
+    padding: 0.2rem 0.5rem;
+  }
+
+  button {
+    margin-top: 1rem;
+  }
+}
+
+.PersonalInfo {
+  display: flex;
+}
+
+.Input {
+  margin-right: 1rem;
+  display: block;
+
+  & > div {
+    margin-left: 0.5rem;
+    display: inline-flex;
+    flex-direction: column;
+  }
+}
+
+.Consents {
+  margin-top: 1rem;
+  border: 1px solid var(--border-color);
+
+  label {
+    cursor: pointer;
+    display: block;
+  }
+}
+
+.Error {
+  color: var(--error-color);
+  font-size: 0.8rem;
+}

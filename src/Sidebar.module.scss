@@ -1,0 +1,22 @@
+.link {
+  color: black;
+  border-bottom: 1px solid #dedede;
+  background: white;
+  display: block;
+  text-decoration: none;
+
+  &:hover {
+    background: #3ca2d533;
+  }
+
+  & a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.active {
+  font-weight: bold;
+}

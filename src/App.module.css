@@ -1,0 +1,17 @@
+.App {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  font-size: 17px;
+  min-height: 100vh;
+}
+
+.App ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.App aside {
+  background: var(--background-color);
+  border-right: 1px solid var(--border-color);
+}

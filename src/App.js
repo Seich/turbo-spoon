@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Sidebar } from "./Sidebar";
+import { GiveConsent } from "./GiveConsent";
+
+import css from "./App.module.css";
+
+function Consents() {
+  useEffect(() => {
+    document.title = "Consents";
+  }, []);
+
+  return <div>Consents</div>;
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={css.App}>
+      <aside>
+        <Sidebar />
+      </aside>
+      <main>
+        <Routes>
+          <Route path="/" element={<GiveConsent />} />
+          <Route path="/give-consent" element={<GiveConsent />} />
+          <Route path="/consents" element={<Consents />} />
+        </Routes>
+      </main>
     </div>
   );
 }
