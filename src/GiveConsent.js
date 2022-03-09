@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { AvailableConsents } from "./Consents";
 import css from "./GiveConsent.module.scss";
 
 function Input({ register, label, name, placeholder, opts, errors }) {
@@ -27,6 +28,7 @@ export function GiveConsent() {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -35,10 +37,20 @@ export function GiveConsent() {
   }, []);
 
   const hasConsent =
-    [watch("newsletter"), watch("ads"), watch("statistics")].some((v) => v) &&
-    [watch("name"), watch("email")].every((v) => !!v);
+    [
+      watch("consents.newsletter"),
+      watch("consents.ads"),
+      watch("consents.statistics"),
+    ].some((v) => v) && [watch("name"), watch("email")].every((v) => !!v);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    await fetch("/consents", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    reset();
+  };
 
   return (
     <form className={css.Form} onSubmit={handleSubmit(onSubmit)}>
@@ -71,28 +83,16 @@ export function GiveConsent() {
       <fieldset className={css.Consents}>
         <legend>I agree to:</legend>
 
-        <label>
-          <input
-            name="newsletter"
-            type="checkbox"
-            {...register("newsletter")}
-          />{" "}
-          Receive newsletter
-        </label>
-
-        <label>
-          <input name="ads" type="checkbox" {...register("ads")} /> Be shown
-          targeted ads
-        </label>
-
-        <label>
-          <input
-            name="statistics"
-            type="checkbox"
-            {...register("statistics")}
-          />{" "}
-          Contribute to anonymous visit statistics
-        </label>
+        {Object.entries(AvailableConsents).map(([key, value]) => (
+          <label key={key}>
+            <input
+              name={key}
+              type="checkbox"
+              {...register(`consents.${key}`)}
+            />
+            {" " + value}
+          </label>
+        ))}
       </fieldset>
 
       <button disabled={!hasConsent}>Give consent</button>

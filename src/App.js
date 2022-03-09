@@ -1,17 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import { GiveConsent } from "./GiveConsent";
+import { Consents } from "./Consents";
 
 import css from "./App.module.css";
-
-function Consents() {
-  useEffect(() => {
-    document.title = "Consents";
-  }, []);
-
-  return <div>Consents</div>;
-}
 
 function App() {
   return (
