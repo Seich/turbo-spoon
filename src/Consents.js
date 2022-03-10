@@ -1,6 +1,6 @@
+import { Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Pagination } from "./Pagination";
 import css from "./Consents.module.scss";
 
 export const AvailableConsents = {
@@ -12,7 +12,7 @@ export const AvailableConsents = {
 export function Consents() {
   const [consents, setConsents] = useState([]);
   const [numPages, setNumPages] = useState(0);
-  const [searchParams] = useSearchParams({ page: 1 });
+  const [searchParams, setSearchParams] = useSearchParams({ page: 1 });
 
   const currentPage = Number(searchParams.get("page"));
 
@@ -55,7 +55,13 @@ export function Consents() {
           ))}
         </tbody>
       </table>
-      <Pagination currentPage={currentPage} numPages={numPages} />
+
+      <div className={css.Pagination}>
+        <Pagination
+          count={numPages}
+          onChange={(_, page) => setSearchParams({ page })}
+        />
+      </div>
     </div>
   );
 }
