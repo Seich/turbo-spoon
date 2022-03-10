@@ -5,7 +5,7 @@ import { Consents } from "./Consents";
 
 import css from "./App.module.css";
 
-function App() {
+export function App() {
   return (
     <div className={css.App}>
       <aside>
@@ -21,5 +21,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
