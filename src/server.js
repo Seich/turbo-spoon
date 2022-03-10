@@ -75,10 +75,11 @@ export function startBackend() {
 
         return {
           page,
-          pages: Math.ceil(schema.db.consents.length / pageSize),
+          rows: schema.db.consents.length,
           consents,
         };
       });
+
       this.post("/consents", (schema, request) => {
         const consent = JSON.parse(request.requestBody);
         schema.db.consents.insert(consent);

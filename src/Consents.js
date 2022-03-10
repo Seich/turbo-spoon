@@ -1,4 +1,4 @@
-import { Pagination } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import css from "./Consents.module.scss";
@@ -11,7 +11,7 @@ export const AvailableConsents = {
 
 export function Consents() {
   const [consents, setConsents] = useState([]);
-  const [numPages, setNumPages] = useState(0);
+  const [numRows, setNumRows] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams({ page: 1 });
 
   const currentPage = Number(searchParams.get("page"));
@@ -25,41 +25,43 @@ export function Consents() {
       `/consents?page=${searchParams.get("page")}`
     ).then((res) => res.json());
 
-    setNumPages(consents.pages);
+    setNumRows(consents.rows);
     setConsents(consents.consents);
   }, [searchParams]);
 
-  const renderGivenConsents = (consents) =>
-    Object.entries(consents)
-      .filter(([_, value]) => value)
-      .map(([key, _]) => AvailableConsents[key])
-      .join(", ");
+  const columns = [
+    { field: "name", headerName: "Name", flex: 0.3 },
+    { field: "email", headerName: "Email", flex: 0.3 },
+    {
+      field: "consent",
+      headerName: "Consent given for",
+      flex: 1,
+      valueGetter: (params) =>
+        Object.entries(params.row.consents)
+          .filter(([_, value]) => value)
+          .map(([key, _]) => AvailableConsents[key])
+          .join(", "),
+    },
+  ];
 
   return (
     <div className={css.Consents}>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Consent given for</th>
-          </tr>
-        </thead>
-        <tbody>
-          {consents.map((consent) => (
-            <tr key={consent.id}>
-              <td>{consent.name}</td>
-              <td>{consent.email}</td>
-              <td>{renderGivenConsents(consent.consents)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className={css.Pagination}>
-        <Pagination
-          count={numPages}
-          onChange={(_, page) => setSearchParams({ page })}
+      <div
+        style={{
+          height: 250,
+        }}
+      >
+        <DataGrid
+          disableColumnMenu
+          disableSelectionOnClick
+          rows={consents}
+          columns={columns}
+          onPageChange={(page) => setSearchParams({ page: page + 1 })}
+          page={currentPage - 1}
+          pageSize={2}
+          paginationMode="server"
+          rowCount={numRows}
+          rowsPerPageOptions={[2]}
         />
       </div>
     </div>
