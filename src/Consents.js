@@ -11,7 +11,6 @@ export const AvailableConsents = {
 
 export function Consents() {
   const [consents, setConsents] = useState([]);
-  const [numRows, setNumRows] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams({ page: 1 });
 
   const currentPage = Number(searchParams.get("page"));
@@ -21,13 +20,9 @@ export function Consents() {
   }, []);
 
   useEffect(async () => {
-    const consents = await fetch(
-      `/consents?page=${searchParams.get("page")}`
-    ).then((res) => res.json());
-
-    setNumRows(consents.rows);
+    const consents = await fetch(`/consents`).then((res) => res.json());
     setConsents(consents.consents);
-  }, [searchParams]);
+  }, []);
 
   const columns = [
     { field: "name", headerName: "Name", flex: 0.3 },
@@ -59,8 +54,7 @@ export function Consents() {
           onPageChange={(page) => setSearchParams({ page: page + 1 })}
           page={currentPage - 1}
           pageSize={2}
-          paginationMode="server"
-          rowCount={numRows}
+          rowCount={consents.length}
           rowsPerPageOptions={[2]}
         />
       </div>

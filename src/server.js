@@ -64,19 +64,10 @@ export function startBackend() {
     },
 
     routes() {
-      this.get("/consents", (schema, request) => {
-        const pageSize = 2;
-        const page = Number(request?.queryParams?.page) ?? 1;
-
-        const consents = schema.db.consents.slice(
-          (page - 1) * pageSize,
-          (page - 1) * pageSize + pageSize
-        );
-
+      this.get("/consents", (schema) => {
         return {
-          page,
           rows: schema.db.consents.length,
-          consents,
+          consents: schema.db.consents,
         };
       });
 
